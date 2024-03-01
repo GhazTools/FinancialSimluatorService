@@ -52,23 +52,29 @@ def get_all_resources() -> List[ResourceMap]:
     resources: List[ResourceMap] = []
 
     for directory_object in listdir(resource_directory):
-        full_path: str = join(resource_directory, directory_object)
+        feature_path: str = join(resource_directory, directory_object)
 
-        if (
-            isdir(full_path)
-            and not directory_object in IGNORE_FOLDERS
-            and RESOURCE_FILE_NAME in listdir(full_path)
-        ):
-            resource_path: str = join(full_path, RESOURCE_FILE_NAME)
+        if not isdir(feature_path):
+            continue
 
-            module_resources: List[ResourceMap] = cast(
-                List[ResourceMap],
-                ModuleLoader.load_object_from_module(
-                    resource_path, f"resource_{len(resources)}", "RESOURCES"
-                ),
-            )
+        for feature_object in listdir(feature_path):
+            full_path: str = join(feature_path, feature_object)
 
-            resources.extend(extract_applicable_resources(module_resources))
+            if (
+                isdir(full_path)
+                and not directory_object in IGNORE_FOLDERS
+                and RESOURCE_FILE_NAME in listdir(full_path)
+            ):
+                resource_path: str = join(full_path, RESOURCE_FILE_NAME)
+
+                module_resources: List[ResourceMap] = cast(
+                    List[ResourceMap],
+                    ModuleLoader.load_object_from_module(
+                        resource_path, f"resource_{len(resources)}", "RESOURCES"
+                    ),
+                )
+
+                resources.extend(extract_applicable_resources(module_resources))
 
     return resources
 
