@@ -9,12 +9,10 @@ Edit Log:
 """
 
 # STANDARD LIBRARY IMPORTS
-from importlib.abc import Loader
-from importlib.machinery import ModuleSpec
-from importlib.util import module_from_spec, spec_from_file_location
 from os import listdir
 from os.path import dirname, isdir, join, realpath
-from typing import List, Set
+
+from typing import List, Set, cast
 
 # THIRD PARTY LIBRARY IMPORTS
 from falcon.asgi import App
@@ -22,6 +20,7 @@ from falcon.asgi import App
 # LOCAL LIBRARY IMPORTS
 from app.resources.resource_map import ResourceMap
 from app.utils.logger import AppLogger
+from app.utils.module_loader import ModuleLoader
 
 # GLOBALS START HERE
 IGNORE_FOLDERS: Set[str] = {"__pycache__"}
@@ -62,15 +61,12 @@ def get_all_resources() -> List[ResourceMap]:
         ):
             resource_path: str = join(full_path, RESOURCE_FILE_NAME)
 
-            module_spec: ModuleSpec | None = spec_from_file_location(
-                f"resource_{len(resources)}", resource_path
+            module_resources: List[ResourceMap] = cast(
+                List[ResourceMap],
+                ModuleLoader.load_object_from_module(
+                    resource_path, f"resource_{len(resources)}", "RESOURCES"
+                ),
             )
-
-            assert isinstance(module_spec, ModuleSpec)
-
-            module: Loader | None = module_from_spec(module_spec)  # type: ignore
-            module_spec.loader.exec_module(module)  # type: ignore
-            module_resources: List[ResourceMap] = module.RESOURCES  # type: ignore
 
             resources.extend(extract_applicable_resources(module_resources))
 

@@ -11,6 +11,8 @@ Edit Log:
 # THIRD PARTY LIBRARY IMPORTS
 import logging.config
 
+from typing import cast
+
 # STANDARD LIBRARY IMPORTS
 from enum import Enum
 from logging import CRITICAL, DEBUG, ERROR, INFO, NOTSET, WARNING, Formatter, Logger
@@ -73,9 +75,7 @@ class AppLogger:
     @staticmethod
     def get_logger() -> Logger:
         AppLogger.logging_setup()
-
-        assert isinstance(AppLogger.__logger, Logger)
-        return AppLogger.__logger
+        return cast(Logger, AppLogger.__logger)
 
     @staticmethod
     def log(log_string: str, log_level: LoggingLevel = LoggingLevel.INFO) -> None:
