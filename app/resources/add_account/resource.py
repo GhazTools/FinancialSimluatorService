@@ -16,7 +16,7 @@ from typing import List
 # LOCAL LIBRARY IMPORTS
 from app.resources.resource_map import ResourceMap
 
-
+# pylint: disable=too-few-public-methods
 class AddAccountResource:
     """
     _summary_

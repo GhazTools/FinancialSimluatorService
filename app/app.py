@@ -11,6 +11,7 @@ Edit Log:
 # STANDARD LIBRARY IMPORTS
 from typing import Final
 
+
 # THIRD PARTY LIBRARY IMPORTS
 from falcon.asgi import App
 
