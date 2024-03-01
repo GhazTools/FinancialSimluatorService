@@ -17,10 +17,11 @@ from falcon.asgi import App
 # LOCAL LIBRARY IMPORTS
 from app.resources.resource_utils import register_routes
 from app.utils.logger import AppLogger
+from app.utils.middleware import Middleware
 
 AppLogger.log("Instantiating app")
 
-APP: Final[App] = App()
+APP: Final[App] = App(middleware=[Middleware()])
 register_routes(APP)
 
 AppLogger.log("Finished instantiating app")
