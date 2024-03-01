@@ -11,7 +11,7 @@ Edit Log:
 # STANDARD LIBRARY IMPORTS
 
 # THIRD PARTY LIBRARY IMPORTS
-from uvicorn import run 
+from uvicorn import run
 
 # LOCAL LIBRARY IMPORTS
 from app.app import APP
@@ -19,5 +19,5 @@ from app.app import APP
 
 application = APP
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run(application, host="0.0.0.0", port=8000)
