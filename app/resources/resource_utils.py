@@ -17,6 +17,8 @@ from typing import List, Set, cast
 # THIRD PARTY LIBRARY IMPORTS
 from falcon.asgi import App
 
+from ghaz_function_timer.timer import Timer
+
 # LOCAL LIBRARY IMPORTS
 from app.resources.resource_endpoint import ResourceEndpoint
 from app.utils.logger import AppLogger
@@ -88,6 +90,7 @@ def get_all_resources() -> List[ResourceEndpoint]:
     return resources
 
 
+@Timer(print_time=True, print_response=False)
 def register_routes(app: App) -> None:
     """
     This function will register all the resources in the resources directory
