@@ -15,13 +15,7 @@ from typing import Final
 from falcon.asgi import App
 
 # LOCAL LIBRARY IMPORTS
-from app.resources.resource_utils import register_routes
-from app.utils.logger import AppLogger
-from app.utils.middleware import Middleware
+from app.utils.app_starter import create_app
 
-AppLogger.log("Instantiating app")
 
-APP: Final[App] = App(middleware=[Middleware()])
-register_routes(APP)
-
-AppLogger.log("Finished instantiating app")
+APP: Final[App] = create_app()
