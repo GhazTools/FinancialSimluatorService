@@ -18,7 +18,7 @@ from typing import List, Set, cast
 from falcon.asgi import App
 
 # LOCAL LIBRARY IMPORTS
-from app.resources.resource_map import ResourceMap
+from app.resources.resource_endpoint import ResourceEndpoint
 from app.utils.logger import AppLogger
 from app.utils.module_loader import ModuleLoader
 
@@ -27,29 +27,55 @@ IGNORE_FOLDERS: Set[str] = {"__pycache__"}
 RESOURCE_FILE_NAME: str = "resource.py"
 
 
-def extract_applicable_resources(resources: List[ResourceMap]) -> List[ResourceMap]:
+def get_feature_endpoints(
+    full_feature_path: str, main_feature: str
+) -> List[ResourceEndpoint]:
     """
-    Extracts a list of applicable resources that can be added to the app
+    This function will get all the resources from a feature directory and return it as a list
     """
 
-    valid_resources: List[ResourceMap] = []
+    resources: List[ResourceEndpoint] = []
 
-    for resource in resources:
-        if not resource["include"]:
+    for feature_object in listdir(full_feature_path):
+        endpoint_branch = f"/{main_feature}/{feature_object}"
+        full_path: str = join(full_feature_path, feature_object)
+
+        if not (
+            isdir(full_path)
+            and not feature_object in IGNORE_FOLDERS
+            and RESOURCE_FILE_NAME in listdir(full_path)
+        ):
             continue
 
-        valid_resources.append(resource)
+        resource_path: str = join(full_path, RESOURCE_FILE_NAME)
 
-    return valid_resources
+        module_resources: ResourceEndpoint = cast(
+            ResourceEndpoint,
+            ModuleLoader.load_object_from_module(
+                resource_path, f"resource_{len(resources)}", "RESOURCE"
+            ),
+        )
+
+        if not module_resources["include"]:
+            continue
+
+        module_resources["endpoint"] = (
+            endpoint_branch
+            if not module_resources["endpoint"]
+            else module_resources["endpoint"]
+        )
+        resources.append(module_resources)
+
+    return resources
 
 
-def get_all_resources() -> List[ResourceMap]:
+def get_all_resources() -> List[ResourceEndpoint]:
     """
     This function will get all the resources from the resources directory and return it as a list
     """
 
     resource_directory: str = realpath((dirname((__file__))))
-    resources: List[ResourceMap] = []
+    resources: List[ResourceEndpoint] = []
 
     for directory_object in listdir(resource_directory):
         feature_path: str = join(resource_directory, directory_object)
@@ -57,24 +83,7 @@ def get_all_resources() -> List[ResourceMap]:
         if not isdir(feature_path):
             continue
 
-        for feature_object in listdir(feature_path):
-            full_path: str = join(feature_path, feature_object)
-
-            if (
-                isdir(full_path)
-                and not directory_object in IGNORE_FOLDERS
-                and RESOURCE_FILE_NAME in listdir(full_path)
-            ):
-                resource_path: str = join(full_path, RESOURCE_FILE_NAME)
-
-                module_resources: List[ResourceMap] = cast(
-                    List[ResourceMap],
-                    ModuleLoader.load_object_from_module(
-                        resource_path, f"resource_{len(resources)}", "RESOURCES"
-                    ),
-                )
-
-                resources.extend(extract_applicable_resources(module_resources))
+        resources.extend(get_feature_endpoints(feature_path, directory_object))
 
     return resources
 
@@ -84,9 +93,9 @@ def register_routes(app: App) -> None:
     This function will register all the resources in the resources directory
     """
 
-    resources: List[ResourceMap] = get_all_resources()
+    resources: List[ResourceEndpoint] = get_all_resources()
 
     for resource in resources:
-        endpoint: str = resource["endpoint"]
+        endpoint: str = cast(str, resource["endpoint"])
         app.add_route(endpoint, resource["resourceClass"]())
         AppLogger.log(f"Registered route: {endpoint}")

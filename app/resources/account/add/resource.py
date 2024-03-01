@@ -9,12 +9,15 @@ Edit Log:
 """
 
 # STANDARD LIBRARY IMPORTS
-from typing import List
+
 
 # THIRD PARTY LIBRARY IMPORTS
 
 # LOCAL LIBRARY IMPORTS
-from app.resources.resource_map import ResourceMap
+from app.resources.resource_endpoint import (
+    ResourceEndpoint,
+    create_resource_endpoint_object,
+)
 
 
 # pylint: disable=too-few-public-methods
@@ -33,6 +36,6 @@ class AddAccountResource:
         print(req, resp)
 
 
-RESOURCES: List[ResourceMap] = [
-    {"resourceClass": AddAccountResource, "endpoint": "/addAccount", "include": True}
-]
+RESOURCE: ResourceEndpoint = create_resource_endpoint_object(
+    AddAccountResource, None, True
+)
