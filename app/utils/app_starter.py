@@ -21,7 +21,7 @@ from app.utils.logger import AppLogger
 from app.utils.middleware import Middleware
 
 
-@Timer(print_time=True, print_response=False)
+@Timer(print_time=True, print_response=False, log_not_print=True)
 def create_app() -> App:
     AppLogger.log("Instantiating app.")
 

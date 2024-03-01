@@ -90,7 +90,7 @@ def get_all_resources() -> List[ResourceEndpoint]:
     return resources
 
 
-@Timer(print_time=True, print_response=False)
+@Timer(print_time=True, print_response=False, log_not_print=True)
 def register_routes(app: App) -> None:
     """
     This function will register all the resources in the resources directory
