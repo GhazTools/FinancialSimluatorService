@@ -163,3 +163,4 @@ cython_debug/
 
 # LOCAL IGNORES
 /script_tester
+/FinancialSimulator

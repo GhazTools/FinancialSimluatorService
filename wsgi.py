@@ -16,8 +16,7 @@ from uvicorn import run
 # LOCAL LIBRARY IMPORTS
 from app.app import APP
 
-
-application = APP
+application = APP  # pylint: disable=invalid-name
 
 if __name__ == "__main__":
     run(application, host="0.0.0.0", port=8000)
