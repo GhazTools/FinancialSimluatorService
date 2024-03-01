@@ -14,8 +14,15 @@ from typing import Final
 # THIRD PARTY LIBRARY IMPORTS
 from falcon.asgi import App
 
+
 # LOCAL LIBRARY IMPORTS
 from app.resources.resource_utils import register_routes
+from app.utils.logger import AppLogger
+
+
+AppLogger.log("Instantiating app")
 
 APP: Final[App] = App()
 register_routes(APP)
+
+AppLogger.log("Finished instantiating app")

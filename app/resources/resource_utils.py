@@ -23,7 +23,7 @@ from falcon.asgi import App
 
 # LOCAL LIBRARY IMPORTS
 from app.resources.resource_map import ResourceMap
-
+from app.utils.logger import AppLogger
 
 # GLOBALS START HERE
 IGNORE_FOLDERS: Set[str] = {"__pycache__"}
@@ -87,4 +87,6 @@ def register_routes(app: App) -> None:
     resources: List[ResourceMap] = get_all_resources()
 
     for resource in resources:
-        app.add_route(resource["endpoint"], resource["resourceClass"]())
+        endpoint: str = resource["endpoint"]
+        app.add_route(endpoint, resource["resourceClass"]())
+        AppLogger.log(f"Registered route: {endpoint}")
