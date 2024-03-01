@@ -22,14 +22,14 @@ class AddAccountResource:
     _summary_
     """
 
-    def on_post(self, req, resp) -> None:
+    async def on_post(self, req, resp) -> None:
         """_summary_
 
         Args:
             req (_type_): _description_
             resp (_type_): _description_
         """
-        ...
+        print(req, resp)
 
 
 RESOURCES: List[ResourceMap] = [
