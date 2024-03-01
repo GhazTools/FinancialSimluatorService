@@ -24,12 +24,12 @@ from token_granter_wrapper.token_granter import (
 
 
 # PYTEST CONFIGURATION
-def pytest_configure():
+def pytest_configure() -> None:
     load_dotenv()
     set_token_granter_url(environ["TOKEN_GRANTER_URL"])
 
 
-def pytest_addoption(parser):
+def pytest_addoption(parser) -> None:
     parser.addoption("--username", action="store", default="")
     parser.addoption("--password", action="store", default="")
 
