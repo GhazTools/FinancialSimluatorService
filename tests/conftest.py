@@ -35,12 +35,12 @@ def pytest_addoption(parser):
 
 
 # GLOBAL FIXTURES
-@fixture(name = "token_username")
+@fixture(name="token_username")
 def fixture_username(request) -> str:
     return str(request.config.getoption("--username"))
 
 
-@fixture(name = "token_password")
+@fixture(name="token_password")
 def fixture_token(request, token_username: str) -> str:
     password = request.config.getoption("--password")
     return str(grant_access_token(token_username, password, True))
