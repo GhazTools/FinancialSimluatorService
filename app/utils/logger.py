@@ -8,16 +8,14 @@ Edit Log:
     - Created file
 """
 
-# STANDARD LIBRARY IMPORTS
-from enum import Enum
-
-from os import environ
-
 # THIRD PARTY LIBRARY IMPORTS
 import logging.config
 
-from logging import Logger, Formatter, NOTSET, DEBUG, INFO, WARNING, ERROR, CRITICAL
+# STANDARD LIBRARY IMPORTS
+from enum import Enum
+from logging import CRITICAL, DEBUG, ERROR, INFO, NOTSET, WARNING, Formatter, Logger
 from logging.handlers import TimedRotatingFileHandler
+from os import environ
 
 # LOCAL LIBRARY IMPORTS
 

@@ -14,10 +14,9 @@ from os import environ
 # THIRD PARTY LIBRARY IMPORTS
 from dotenv import load_dotenv
 from pytest import fixture
-
 from token_granter_wrapper.token_granter import (
-    set_token_granter_url,
     grant_access_token,
+    set_token_granter_url,
 )
 
 # LOCAL LIBRARY IMPORTS
