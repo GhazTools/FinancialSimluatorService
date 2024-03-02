@@ -39,12 +39,14 @@ class TransactionType(Enum):
         ...
     """
 
+    # POSITIVE OPERATORS
     DEPOSIT = "DEPOSIT"
+    POSITIVE_INTEREST = "INTEREST"
+    DIVIDEND = "DIVIDEND"
+    # NEGATIVE OPERATORS
     WITHDRAWAL = "WITHDRAWAL"
     PAYMENT = "PAYMENT"
-    POSITIVE_INTEREST = "INTEREST"
     NEGATIVE_INTEREST = "NEGATIVE_INTEREST"
-    DIVIDEND = "DIVIDEND"
 
 
 class Transaction(TypedDict):
@@ -62,10 +64,12 @@ class Transaction(TypedDict):
 
 
 TRANSACTION_OPERATORS: Final[Dict[TransactionType, Callable[[float, float], float]]] = {
+    # POSITIVE OPERATORS
     TransactionType.DEPOSIT: add,
+    TransactionType.POSITIVE_INTEREST: add,
+    TransactionType.DIVIDEND: add,
+    # NEGATIVE OPERATORS
     TransactionType.WITHDRAWAL: sub,
     TransactionType.PAYMENT: sub,
-    TransactionType.POSITIVE_INTEREST: add,
     TransactionType.NEGATIVE_INTEREST: sub,
-    TransactionType.DIVIDEND: add,
 }
