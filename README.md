@@ -1,2 +1,2 @@
 # Running this application
-uvicorn wsgi:applicaiton --workers 4
+uvicorn wsgi:application --workers 4
