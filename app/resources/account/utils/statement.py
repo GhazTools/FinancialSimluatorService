@@ -10,7 +10,7 @@ Edit Log:
 
 # STANDARD LIBRARY IMPORTS
 from datetime import datetime
-from typing import Callable
+from typing import Callable, TypedDict
 
 # THIRD PARTY LIBRARY IMPORTS
 
@@ -20,6 +20,20 @@ from app.resources.account.utils.transaction import (
     TransactionType,
     TRANSACTION_OPERATORS,
 )
+
+
+class StatementReport(TypedDict):
+    """_summary_
+
+    Args:
+        TypedDict (_type_): _description_
+    """
+
+    statement_start_date: datetime
+    statement_end_date: datetime
+    starting_balance: float
+    ending_balance: float
+    transactions: list[Transaction]
 
 
 class Statement:
@@ -117,6 +131,9 @@ class Statement:
         """
         self.__transactions.append(transaction)
         self.__update_balance_from_transaction(transaction)
+
+    def create_statement_report(self) -> None:
+        ...
 
     # PUBLIC METHODS END HERE
 

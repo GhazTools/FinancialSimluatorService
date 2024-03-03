@@ -25,7 +25,7 @@ from app.utils.logger import AppLogger
 from app.utils.module_loader import ModuleLoader
 
 # GLOBALS START HERE
-IGNORE_FOLDERS: Set[str] = {"__pycache__"}
+IGNORE_FOLDERS: Set[str] = {"__pycache__", "shared_resource_utils"}
 RESOURCE_FILE_NAME: str = "resource.py"
 
 
